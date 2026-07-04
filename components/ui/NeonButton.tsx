@@ -2,6 +2,7 @@
 
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import React from "react";
+import { useMagnetic } from "@/lib/useMagnetic";
 
 type Props = Omit<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -11,20 +12,26 @@ type Props = Omit<
 };
 
 export default function NeonButton({ children, className = "", ...props }: Props) {
-  const x = useMotionValue(50);
-  const y = useMotionValue(50);
-  const bg = useMotionTemplate`radial-gradient(180px circle at ${x}% ${y}%, rgba(232,130,30,.35), transparent 70%)`;
+  const glowX = useMotionValue(50);
+  const glowY = useMotionValue(50);
+  const bg = useMotionTemplate`radial-gradient(180px circle at ${glowX}% ${glowY}%, rgba(232,130,30,.35), transparent 70%)`;
+  const magnetic = useMagnetic(0.3);
 
   return (
     <motion.button
-      whileHover={{ y: -3, scale: 1.02 }}
-      whileTap={{ scale: 0.98, y: 0 }}
+      ref={magnetic.ref as React.Ref<HTMLButtonElement>}
+      data-cursor-hover
+      style={{ x: magnetic.x, y: magnetic.y }}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.96 }}
       transition={{ type: "spring", stiffness: 350, damping: 22 }}
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
-        x.set(((e.clientX - r.left) / r.width) * 100);
-        y.set(((e.clientY - r.top) / r.height) * 100);
+        glowX.set(((e.clientX - r.left) / r.width) * 100);
+        glowY.set(((e.clientY - r.top) / r.height) * 100);
+        magnetic.onMouseMove(e);
       }}
+      onMouseLeave={magnetic.onMouseLeave}
       className={`group relative overflow-hidden rounded-2xl border border-ember/30 bg-espresso px-6 py-3 text-cream shadow-[0_0_0_1px_rgba(255,255,255,.02)] ${className}`}
       {...props}
     >

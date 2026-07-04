@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
 import type { MenuItem } from "@/content/menu";
 
 /**
@@ -12,11 +12,13 @@ import type { MenuItem } from "@/content/menu";
 export default function DishCard({ item }: { item: MenuItem & { category: string } }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [10, -10]), { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-10, 10]), { stiffness: 200, damping: 20 });
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [12, -12]), { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-12, 12]), { stiffness: 200, damping: 20 });
+  const glow = useMotionTemplate`radial-gradient(220px circle at ${useTransform(x, [-0.5, 0.5], [0, 100])}% ${useTransform(y, [-0.5, 0.5], [0, 100])}%, rgba(232,130,30,.35), transparent 70%)`;
 
   return (
     <motion.div
+      data-cursor-hover
       onPointerMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
         x.set((e.clientX - r.left) / r.width - 0.5);
@@ -26,9 +28,16 @@ export default function DishCard({ item }: { item: MenuItem & { category: string
         x.set(0);
         y.set(0);
       }}
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
       style={{ rotateX, rotateY, transformPerspective: 800 }}
       className="grain group relative aspect-[4/5] overflow-hidden rounded-3xl border border-gold/10 bg-gradient-to-br from-ember-deep/50 via-espresso to-ink"
     >
+      <motion.div
+        style={{ background: glow }}
+        className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      />
+
       <div className="absolute right-4 top-4 rounded-full border border-gold/30 px-3 py-1 text-[10px] uppercase tracking-eyebrow text-gold">
         360° Drag
       </div>

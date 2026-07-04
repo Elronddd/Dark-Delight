@@ -4,7 +4,7 @@ import LogoMark from "@/components/ui/LogoMark";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-gold/10 bg-ink">
+    <footer data-cursor-hover className="border-t border-gold/10 bg-ink">
       <div className="mx-auto max-w-7xl px-6 py-16 md:px-10">
         <div className="grid gap-12 md:grid-cols-4">
           <div>

@@ -36,11 +36,42 @@ body {
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
+
+  /* Choreographed entrance for server-rendered hero copy (no client JS needed) */
+  .enter-fade-up {
+    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 *:focus-visible {
   outline: 2px solid #e8821e;
   outline-offset: 2px;
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html,
+  body,
+  a,
+  button {
+    cursor: none;
+  }
+
+  input,
+  textarea,
+  select {
+    cursor: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

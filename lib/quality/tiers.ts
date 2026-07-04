@@ -10,7 +10,10 @@ export const tierConfig = {
     dpr: [1, 2] as [number, number],
   },
   medium: {
-    postprocessing: { bloom: true, dof: false, vignette: true },
+    // EffectComposer/postprocessing measured ~10x more expensive than
+    // everything else in the scene combined (multi-pass full-screen render) —
+    // reserve it for High only, confirmed-capable hardware.
+    postprocessing: { bloom: false, dof: false, vignette: false },
     shadows: "off" as const,
     steamPlanes: 2,
     sparkles: 24,

@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import SmoothScrollProvider from "@/lib/scroll/SmoothScrollProvider";
 import { getRestaurantJsonLd } from "@/lib/seo/jsonld";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -48,6 +49,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <CustomCursor />
         <SmoothScrollProvider>
           <Navbar />
           <div id="main-content">{children}</div>

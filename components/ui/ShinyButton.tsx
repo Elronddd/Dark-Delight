@@ -2,6 +2,7 @@
 
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import React from "react";
+import { useMagnetic } from "@/lib/useMagnetic";
 
 type Props = Omit<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -14,17 +15,23 @@ export default function ShinyButton({ children, className = "", ...props }: Prop
   const mx = useMotionValue(50);
   const my = useMotionValue(50);
   const shine = useMotionTemplate`radial-gradient(140px circle at ${mx}% ${my}%, rgba(255,255,255,.28), transparent 65%)`;
+  const magnetic = useMagnetic(0.3);
 
   return (
     <motion.button
-      whileHover={{ scale: 1.03, y: -2 }}
-      whileTap={{ scale: 0.98 }}
+      ref={magnetic.ref as React.Ref<HTMLButtonElement>}
+      data-cursor-hover
+      style={{ x: magnetic.x, y: magnetic.y }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       transition={{ type: "spring", stiffness: 320, damping: 22 }}
       onMouseMove={(e) => {
         const r = e.currentTarget.getBoundingClientRect();
         mx.set(((e.clientX - r.left) / r.width) * 100);
         my.set(((e.clientY - r.top) / r.height) * 100);
+        magnetic.onMouseMove(e);
       }}
+      onMouseLeave={magnetic.onMouseLeave}
       className={`group relative overflow-hidden rounded-full px-7 py-3 bg-ember border border-ember-deep/40 text-ink ${className}`}
       {...props}
     >

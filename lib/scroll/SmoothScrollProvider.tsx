@@ -22,7 +22,11 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
       return;
     }
 
-    const lenis = new Lenis({ duration: 1.2, smoothWheel: true });
+    const lenis = new Lenis({
+      duration: 0.9,
+      smoothWheel: true,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
+    });
     lenisInstance = lenis;
 
     const update = (time: number) => lenis.raf(time * 1000);

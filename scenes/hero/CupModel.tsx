@@ -17,20 +17,25 @@ export default function CupModel() {
   useFrame((state) => {
     if (!group.current) return;
     const t = state.clock.elapsedTime;
-    group.current.position.y = Math.sin(t * 0.6) * 0.04;
-    group.current.rotation.y = Math.sin(t * 0.25) * 0.15;
+    // Idle bob/sway plus a mouse-parallax tilt layered on top (state.pointer
+    // is R3F's normalized -1..1 cursor position over the canvas).
+    const targetRotY = Math.sin(t * 0.25) * 0.15 + state.pointer.x * 0.35;
+    const targetRotX = state.pointer.y * -0.12;
+    group.current.position.y = Math.sin(t * 0.6) * 0.04 + state.pointer.y * 0.05;
+    group.current.rotation.y += (targetRotY - group.current.rotation.y) * 0.05;
+    group.current.rotation.x += (targetRotX - group.current.rotation.x) * 0.05;
   });
 
   return (
     <group ref={group} position={[0, -0.2, 0]}>
       {/* Saucer */}
-      <mesh position={[0, -0.18, 0]} receiveShadow>
+      <mesh position={[0, -0.18, 0]}>
         <cylinderGeometry args={[0.95, 1, 0.05, 48]} />
         <meshPhysicalMaterial color="#F5EDE0" roughness={0.45} clearcoat={0.4} envMapIntensity={0.5} />
       </mesh>
 
       {/* Cup body (tapered cylinder) */}
-      <mesh position={[0, 0.25, 0]} castShadow receiveShadow>
+      <mesh position={[0, 0.25, 0]}>
         <cylinderGeometry args={[0.62, 0.5, 0.85, 48, 1, true]} />
         <meshPhysicalMaterial
           color="#F5EDE0"
@@ -66,7 +71,7 @@ export default function CupModel() {
       </mesh>
 
       {/* Handle */}
-      <mesh position={[0.62, 0.3, 0]} rotation={[0, 0, 0]} castShadow>
+      <mesh position={[0.62, 0.3, 0]} rotation={[0, 0, 0]}>
         <torusGeometry args={[0.22, 0.055, 16, 32, Math.PI * 1.4]} />
         <meshPhysicalMaterial color="#F5EDE0" roughness={0.4} clearcoat={0.4} envMapIntensity={0.5} />
       </mesh>
