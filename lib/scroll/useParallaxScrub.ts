@@ -13,9 +13,13 @@ gsap.registerPlugin(ScrollTrigger);
  * scrolls. Factored out of ReservationCTA so other sections can reuse the
  * same "ambient background parallax" technique instead of re-deriving it.
  */
-export function useParallaxScrub<T extends HTMLElement>(ref: RefObject<T | null>, amount = 20) {
+export function useParallaxScrub<T extends HTMLElement>(
+  ref: RefObject<T | null>,
+  amount = 20,
+  enabled = true
+) {
   useEffect(() => {
-    if (!ref.current) return;
+    if (!enabled || !ref.current) return;
     if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
@@ -27,5 +31,5 @@ export function useParallaxScrub<T extends HTMLElement>(ref: RefObject<T | null>
     }, ref);
 
     return () => ctx.revert();
-  }, [ref, amount]);
+  }, [ref, amount, enabled]);
 }

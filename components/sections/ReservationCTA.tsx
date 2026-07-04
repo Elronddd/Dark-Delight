@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import ShinyButton from "@/components/ui/ShinyButton";
 import AnimatedSection from "@/components/ui/motion/AnimatedSection";
 import AnimatedHeading from "@/components/ui/motion/AnimatedHeading";
@@ -13,17 +14,21 @@ export default function ReservationCTA() {
   const glowRef = useRef<HTMLDivElement>(null);
 
   // Background glow drifts slower than the page scrolls — cheap depth cue.
+  // (GSAP only ever touches this element's `transform`; the breathing
+  // opacity below is driven by Framer, so the two never fight over one property.)
   useParallaxScrub(glowRef, 20);
 
   return (
     <section ref={sectionRef} className="relative overflow-hidden bg-ink py-28">
-      <div
+      <motion.div
         ref={glowRef}
         aria-hidden
-        className="absolute inset-0 opacity-60"
+        className="absolute inset-0"
         style={{
           background: "radial-gradient(50% 60% at 50% 50%, rgba(232,130,30,0.18), transparent 70%)",
         }}
+        animate={{ opacity: [0.5, 0.7, 0.5] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
       <AnimatedSection className="relative mx-auto max-w-3xl px-6 text-center md:px-10">
         <p className="eyebrow mb-4" data-reveal>Reserve Your Experience</p>

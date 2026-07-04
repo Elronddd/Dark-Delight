@@ -7,8 +7,20 @@ const cuisines = ["Tandoor", "Chinese", "Biryani", "Continental", "Coffee & Shak
 
 export default function TrustStrip() {
   return (
-    <section className="border-y border-gold/10 bg-espresso/40">
-      <AnimatedSection className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-10 text-center sm:grid-cols-3 md:px-10">
+    <section className="relative overflow-hidden border-y border-gold/10 bg-espresso/40">
+      {/* Softens the hard color-cut from Hero's bg-ink into this section's tint. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-ink/50 to-transparent"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-ink/50 to-transparent"
+      />
+      <AnimatedSection
+        variant="scale"
+        className="relative mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-10 text-center sm:grid-cols-3 sm:divide-x sm:divide-gold/10 md:px-10"
+      >
         <div data-reveal>
           <p className="eyebrow mb-2">Rated</p>
           <p className="font-display text-2xl text-cream">

@@ -40,7 +40,7 @@ export default function SignatureMenuShowcase() {
           background: "radial-gradient(50% 45% at 85% 10%, rgba(232,130,30,0.12), transparent 70%)",
         }}
       />
-      <AnimatedSection className="relative mb-14 text-center">
+      <AnimatedSection variant="mask" className="relative mb-14 text-center">
         <p className="eyebrow mb-4" data-reveal>Our Signature</p>
         <AnimatedHeading
           as="h2"
@@ -52,6 +52,8 @@ export default function SignatureMenuShowcase() {
       <AnimatedSection
         y={48}
         stagger={0.08}
+        variant="scale"
+        rotate={5}
         className="relative grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5"
       >
         {featured.map((item) => (

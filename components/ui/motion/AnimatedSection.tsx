@@ -1,16 +1,21 @@
 "use client";
 
-import { useScrollReveal } from "@/lib/scroll/useScrollReveal";
+import { useScrollReveal, type RevealVariant } from "@/lib/scroll/useScrollReveal";
 
 type Props = React.HTMLAttributes<HTMLElement> & {
   children: React.ReactNode;
-  /** Slide-up distance in px for the reveal (default matches useScrollReveal's own default of 32). */
+  /** Slide-up/side distance in px for the reveal (default matches useScrollReveal's own default of 32). */
   y?: number;
   /** Delay between each `data-reveal` child's entrance. */
   stagger?: number;
   /** Element tag to render — "section" when this wrapper IS the landmark
    * (e.g. an anchor-jump target that also needs the reveal). */
   as?: "div" | "section";
+  /** Reveal recipe — pick a distinct one per section so the page doesn't
+   * repeat the same entrance everywhere. Defaults to "fade". */
+  variant?: RevealVariant;
+  /** Alternates +/- this many degrees per data-reveal target — a "layered" stagger for grids. */
+  rotate?: number;
 };
 
 /**
@@ -20,8 +25,16 @@ type Props = React.HTMLAttributes<HTMLElement> & {
  * in with `data-reveal`; if none are marked, the whole block animates as one.
  * Any standard HTML/ARIA attribute (id, aria-labelledby, etc.) passes through.
  */
-export default function AnimatedSection({ children, y, stagger, as = "div", ...rest }: Props) {
-  const ref = useScrollReveal<HTMLElement>({ y, stagger });
+export default function AnimatedSection({
+  children,
+  y,
+  stagger,
+  as = "div",
+  variant,
+  rotate,
+  ...rest
+}: Props) {
+  const ref = useScrollReveal<HTMLElement>({ y, stagger, variant, rotate });
 
   // Cast needed because a single ref (typed HTMLElement, the common
   // supertype) is shared across two possible tags — TypeScript's DOM ref

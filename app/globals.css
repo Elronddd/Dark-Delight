@@ -41,6 +41,26 @@ body {
   .enter-fade-up {
     animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
+
+  /* Plays automatically whenever a freshly-filtered menu row mounts — CSS-only
+     so it doesn't require pulling framer-motion into the /menu bundle just for
+     list filtering (measured ~38kB for no real runtime benefit there). */
+  .item-enter {
+    animation: itemFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* Slow ambient sheen sweep for placeholder image panels — reads as a soft
+     light pass rather than a "loading" spinner, so it works as a permanent
+     ambient touch, not just a one-shot loading cue. */
+  .shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 40%, rgba(245, 237, 224, 0.08) 50%, transparent 60%);
+    background-size: 250% 250%;
+    animation: shimmerSweep 6s ease-in-out infinite;
+  }
 }
 
 @keyframes fadeUp {
@@ -51,6 +71,27 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes itemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmerSweep {
+  0% {
+    background-position: 200% 0%;
+  }
+  50%,
+  100% {
+    background-position: -50% 0%;
   }
 }
 

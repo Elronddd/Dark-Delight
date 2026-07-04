@@ -26,7 +26,7 @@ export default function About() {
           background: "radial-gradient(45% 55% at 15% 20%, rgba(201,164,99,0.14), transparent 70%)",
         }}
       />
-      <AnimatedSection className="relative grid gap-16 md:grid-cols-2 md:items-center">
+      <AnimatedSection variant="slide-left" className="relative grid gap-16 md:grid-cols-2 md:items-center">
         <div>
           <p className="eyebrow mb-5" data-reveal>Our Story</p>
           <AnimatedHeading
@@ -45,6 +45,9 @@ export default function About() {
               key={panel.label}
               className={`rounded-2xl ${i === 0 ? "col-span-3 aspect-[16/9]" : "aspect-square"}`}
               innerClassName={`grain bg-gradient-to-br ${panel.tone}`}
+              parallax={i === 0}
+              hoverTilt
+              shimmer
             >
               <span className="absolute bottom-3 left-3 eyebrow text-cream/60">{panel.label}</span>
             </AnimatedImage>

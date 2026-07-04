@@ -3,13 +3,16 @@
 import AnimatedSection from "@/components/ui/motion/AnimatedSection";
 import type { MenuCategory } from "@/content/menu";
 
-export default function MenuCategorySection({ category }: { category: MenuCategory }) {
+export default function MenuCategorySection({ category, index }: { category: MenuCategory; index: number }) {
   return (
     <AnimatedSection
       as="section"
       id={category.id}
       y={20}
       stagger={0.03}
+      // Alternates by category order so the long category list doesn't read
+      // as one repeated animation for all sixteen sections.
+      variant={index % 2 === 0 ? "slide-left" : "slide-right"}
       className="anchor-offset mb-20"
       aria-labelledby={`${category.id}-heading`}
     >
@@ -28,9 +31,11 @@ export default function MenuCategorySection({ category }: { category: MenuCatego
           {sub.label && <h3 className="eyebrow mb-4 font-sans">{sub.label}</h3>}
           <div className="grid gap-x-10 gap-y-3 sm:grid-cols-2">
             {sub.items.map((item) => (
+              // Keyed on name so filtering swaps in a genuinely new node per
+              // match, which is what makes .item-enter's mount animation replay.
               <div
                 key={item.name}
-                className="flex items-baseline justify-between gap-3 border-b border-gold/5 pb-2"
+                className="item-enter flex items-baseline justify-between gap-3 border-b border-gold/5 pb-2"
               >
                 <span className="flex items-center gap-2 text-cream/90">
                   <span

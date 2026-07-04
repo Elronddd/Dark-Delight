@@ -65,11 +65,11 @@ export default function MenuClient() {
       </nav>
 
       {filtered.length === 0 && (
-        <p className="py-24 text-center text-cream/50">No dishes match your search.</p>
+        <p className="item-enter py-24 text-center text-cream/50">No dishes match your search.</p>
       )}
 
-      {filtered.map((category) => (
-        <MenuCategorySection key={category.id} category={category} />
+      {filtered.map((category, index) => (
+        <MenuCategorySection key={category.id} category={category} index={index} />
       ))}
     </div>
   );
