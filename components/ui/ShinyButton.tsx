@@ -1,19 +1,19 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-import React from "react";
+import type React from "react";
+import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 import { useMagnetic } from "@/lib/useMagnetic";
+import { getPointerPercent } from "@/lib/utils/mouse";
+import { SPRING_BUTTON_SECONDARY, SPRING_BUTTON_TAP, SPRING_GLOW_FOLLOW } from "@/lib/animations/transitions";
+import { HOVER_SCALE_LG, TAP_SCALE_LG } from "@/lib/animations/variants";
+import { DURATION } from "@/lib/constants";
+import type { MotionSafeButtonProps } from "@/lib/animations/types";
 
-type Props = Omit<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  "onAnimationStart" | "onAnimationEnd" | "onDrag" | "onDragStart" | "onDragEnd"
-> & {
-  children: React.ReactNode;
-};
-
-export default function ShinyButton({ children, className = "", ...props }: Props) {
-  const mx = useMotionValue(50);
-  const my = useMotionValue(50);
+export default function ShinyButton({ children, className = "", ...props }: MotionSafeButtonProps) {
+  const rawMx = useMotionValue(50);
+  const rawMy = useMotionValue(50);
+  const mx = useSpring(rawMx, SPRING_GLOW_FOLLOW);
+  const my = useSpring(rawMy, SPRING_GLOW_FOLLOW);
   const shine = useMotionTemplate`radial-gradient(140px circle at ${mx}% ${my}%, rgba(255,255,255,.28), transparent 65%)`;
   const magnetic = useMagnetic(0.3);
 
@@ -22,13 +22,12 @@ export default function ShinyButton({ children, className = "", ...props }: Prop
       ref={magnetic.ref as React.Ref<HTMLButtonElement>}
       data-cursor-hover
       style={{ x: magnetic.x, y: magnetic.y }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 320, damping: 22 }}
+      whileHover={{ ...HOVER_SCALE_LG, transition: SPRING_BUTTON_SECONDARY }}
+      whileTap={{ ...TAP_SCALE_LG, transition: SPRING_BUTTON_TAP }}
       onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        mx.set(((e.clientX - r.left) / r.width) * 100);
-        my.set(((e.clientY - r.top) / r.height) * 100);
+        const { x, y } = getPointerPercent(e, e.currentTarget);
+        rawMx.set(x);
+        rawMy.set(y);
         magnetic.onMouseMove(e);
       }}
       onMouseLeave={magnetic.onMouseLeave}
@@ -38,7 +37,7 @@ export default function ShinyButton({ children, className = "", ...props }: Prop
       <motion.div className="absolute inset-0" style={{ background: shine }} />
       <motion.div
         animate={{ x: ["-160%", "220%"] }}
-        transition={{ duration: 2.4, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: DURATION.shineLoop, repeat: Infinity, ease: "linear" }}
         className="absolute inset-y-0 w-20 -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent"
       />
       <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white/15 to-transparent" />

@@ -1,19 +1,18 @@
 "use client";
 
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
-import React from "react";
+import type React from "react";
+import { motion, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
 import { useMagnetic } from "@/lib/useMagnetic";
+import { getPointerPercent } from "@/lib/utils/mouse";
+import { SPRING_BUTTON_PRIMARY, SPRING_BUTTON_TAP, SPRING_GLOW_FOLLOW } from "@/lib/animations/transitions";
+import { HOVER_SCALE_MD, TAP_SCALE_MD } from "@/lib/animations/variants";
+import type { MotionSafeButtonProps } from "@/lib/animations/types";
 
-type Props = Omit<
-  React.ButtonHTMLAttributes<HTMLButtonElement>,
-  "onAnimationStart" | "onAnimationEnd" | "onDrag" | "onDragStart" | "onDragEnd"
-> & {
-  children: React.ReactNode;
-};
-
-export default function NeonButton({ children, className = "", ...props }: Props) {
-  const glowX = useMotionValue(50);
-  const glowY = useMotionValue(50);
+export default function NeonButton({ children, className = "", ...props }: MotionSafeButtonProps) {
+  const rawGlowX = useMotionValue(50);
+  const rawGlowY = useMotionValue(50);
+  const glowX = useSpring(rawGlowX, SPRING_GLOW_FOLLOW);
+  const glowY = useSpring(rawGlowY, SPRING_GLOW_FOLLOW);
   const bg = useMotionTemplate`radial-gradient(180px circle at ${glowX}% ${glowY}%, rgba(232,130,30,.35), transparent 70%)`;
   const magnetic = useMagnetic(0.3);
 
@@ -22,13 +21,12 @@ export default function NeonButton({ children, className = "", ...props }: Props
       ref={magnetic.ref as React.Ref<HTMLButtonElement>}
       data-cursor-hover
       style={{ x: magnetic.x, y: magnetic.y }}
-      whileHover={{ scale: 1.04 }}
-      whileTap={{ scale: 0.96 }}
-      transition={{ type: "spring", stiffness: 350, damping: 22 }}
+      whileHover={{ ...HOVER_SCALE_MD, transition: SPRING_BUTTON_PRIMARY }}
+      whileTap={{ ...TAP_SCALE_MD, transition: SPRING_BUTTON_TAP }}
       onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        glowX.set(((e.clientX - r.left) / r.width) * 100);
-        glowY.set(((e.clientY - r.top) / r.height) * 100);
+        const { x, y } = getPointerPercent(e, e.currentTarget);
+        rawGlowX.set(x);
+        rawGlowY.set(y);
         magnetic.onMouseMove(e);
       }}
       onMouseLeave={magnetic.onMouseLeave}

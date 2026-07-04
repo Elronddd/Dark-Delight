@@ -1,43 +1,20 @@
-"use client";
-
-import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { memo } from "react";
 import type { MenuItem } from "@/content/menu";
+import AnimatedCard from "@/components/ui/motion/AnimatedCard";
 
 /**
  * Placeholder for the real photo-sequence PhotoTurntable (see technical plan).
  * No real signature-item photography exists yet, so this ships a drag/hover
  * tilt-card treatment instead of true 360deg frame scrubbing — swap in
  * <PhotoTurntable images={...}/> here once real photos land in brand_assets/.
+ *
+ * Memoized: `item` references are stable (SignatureMenuShowcase's `featured`
+ * array is computed once at module scope), so this genuinely skips
+ * re-rendering the 5 grid cards on unrelated parent re-renders.
  */
-export default function DishCard({ item }: { item: MenuItem & { category: string } }) {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [12, -12]), { stiffness: 200, damping: 20 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-12, 12]), { stiffness: 200, damping: 20 });
-  const glow = useMotionTemplate`radial-gradient(220px circle at ${useTransform(x, [-0.5, 0.5], [0, 100])}% ${useTransform(y, [-0.5, 0.5], [0, 100])}%, rgba(232,130,30,.35), transparent 70%)`;
-
+function DishCard({ item }: { item: MenuItem & { category: string } }) {
   return (
-    <motion.div
-      data-cursor-hover
-      onPointerMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        x.set((e.clientX - r.left) / r.width - 0.5);
-        y.set((e.clientY - r.top) / r.height - 0.5);
-      }}
-      onPointerLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
-      whileHover={{ scale: 1.03 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-      style={{ rotateX, rotateY, transformPerspective: 800 }}
-      className="grain group relative aspect-[4/5] overflow-hidden rounded-3xl border border-gold/10 bg-gradient-to-br from-ember-deep/50 via-espresso to-ink"
-    >
-      <motion.div
-        style={{ background: glow }}
-        className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      />
-
+    <AnimatedCard className="grain aspect-[4/5] rounded-3xl border border-gold/10 bg-gradient-to-br from-ember-deep/50 via-espresso to-ink">
       <div className="absolute right-4 top-4 rounded-full border border-gold/30 px-3 py-1 text-[10px] uppercase tracking-eyebrow text-gold">
         360° Drag
       </div>
@@ -47,6 +24,8 @@ export default function DishCard({ item }: { item: MenuItem & { category: string
         <h3 className="font-display text-2xl text-cream">{item.name}</h3>
         <p className="mt-2 font-display text-lg text-ember">₹{item.price}</p>
       </div>
-    </motion.div>
+    </AnimatedCard>
   );
 }
+
+export default memo(DishCard);

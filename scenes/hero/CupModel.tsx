@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import type { Group } from "three";
+import { approach } from "@/lib/utils/spring";
 
 /**
  * A procedurally-built cup (cylinder body + torus handle + saucer), not a
@@ -22,8 +23,11 @@ export default function CupModel() {
     const targetRotY = Math.sin(t * 0.25) * 0.15 + state.pointer.x * 0.35;
     const targetRotX = state.pointer.y * -0.12;
     group.current.position.y = Math.sin(t * 0.6) * 0.04 + state.pointer.y * 0.05;
-    group.current.rotation.y += (targetRotY - group.current.rotation.y) * 0.05;
-    group.current.rotation.x += (targetRotX - group.current.rotation.x) * 0.05;
+    group.current.rotation.y = approach(group.current.rotation.y, targetRotY, 0.05);
+    group.current.rotation.x = approach(group.current.rotation.x, targetRotX, 0.05);
+    // Near-imperceptible breathing scale so the cup never reads as frozen.
+    const breath = 1 + Math.sin(t * 0.5) * 0.012;
+    group.current.scale.setScalar(breath);
   });
 
   return (

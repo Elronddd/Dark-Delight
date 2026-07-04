@@ -3,6 +3,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { EASE_OUT_SOFT } from "@/lib/animations/easing";
+import { DURATION } from "@/lib/constants";
+import { prefersReducedMotion } from "@/lib/utils/viewport";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,18 +18,19 @@ export function useScrollReveal<T extends HTMLElement>(options?: { y?: number; s
 
     // Respect reduced-motion: show content immediately, skip the tween entirely
     // rather than leaving it stuck at opacity:0 if a trigger never fires.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
       const targets = ref.current!.querySelectorAll("[data-reveal]");
       gsap.fromTo(
         targets.length ? targets : ref.current,
-        { opacity: 0, y: options?.y ?? 32 },
+        { opacity: 0, y: options?.y ?? 32, filter: "blur(6px)" },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
-          ease: "power3.out",
+          filter: "blur(0px)",
+          duration: DURATION.reveal,
+          ease: EASE_OUT_SOFT,
           stagger: options?.stagger ?? 0.12,
           scrollTrigger: {
             trigger: ref.current,

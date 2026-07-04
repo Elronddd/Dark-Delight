@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { detectStaticTier } from "@/lib/quality/detectTier";
 import { useAppStore } from "@/lib/store/useAppStore";
 import HeroFallback from "@/scenes/hero/HeroFallback";
@@ -37,7 +38,25 @@ export default function HeroCanvasLoader() {
 
   return (
     <div ref={wrapperRef} className="absolute inset-0">
-      {!ready || qualityTier === "low" ? <HeroFallback /> : <HeroScene active={visible} />}
+      {/* Crossfades the gradient stand-in into the real WebGL scene instead of
+          an abrupt swap the instant the dynamic import resolves. */}
+      <AnimatePresence>
+        {!ready || qualityTier === "low" ? (
+          <motion.div key="fallback" className="absolute inset-0" exit={{ opacity: 0 }} transition={{ duration: 0.6 }}>
+            <HeroFallback />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="scene"
+            className="absolute inset-0"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <HeroScene active={visible} />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

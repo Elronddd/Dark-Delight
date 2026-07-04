@@ -3,6 +3,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { EASE_OUT_SOFT, EASE_IN_OUT_STRONG } from "@/lib/animations/easing";
+import { DURATION } from "@/lib/constants";
+import { prefersReducedMotion } from "@/lib/utils/viewport";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,14 +19,22 @@ type Props = {
   children?: React.ReactNode;
 };
 
-/** Wipes a panel into view via clip-path (curtain reveal) with a Ken-Burns zoom-out — reads far more "designed" than an opacity fade. */
-export default function RevealPanel({ className = "", innerClassName = "", delay = 0, children }: Props) {
+/**
+ * Wipes a panel into view via clip-path (curtain reveal) with a Ken-Burns
+ * zoom-out — reads far more "designed" than an opacity fade. Currently used
+ * with styled gradient placeholders (see content/business.ts notes on real
+ * photography); when real photos land, swap the `innerClassName` gradient
+ * div for a `next/image` `<Image fill>` here and set `sizes`/`priority`
+ * appropriately for the slot (hero-adjacent panels should set `priority`,
+ * below-the-fold gallery frames should not).
+ */
+export default function AnimatedImage({ className = "", innerClassName = "", delay = 0, children }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!wrapRef.current || !innerRef.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -31,9 +42,9 @@ export default function RevealPanel({ className = "", innerClassName = "", delay
         { clipPath: "inset(100% 0% 0% 0%)" },
         {
           clipPath: "inset(0% 0% 0% 0%)",
-          duration: 1.1,
+          duration: DURATION.slow,
           delay,
-          ease: "power4.inOut",
+          ease: EASE_IN_OUT_STRONG,
           scrollTrigger: { trigger: wrapRef.current, start: "top 88%", once: true },
         }
       );
@@ -42,9 +53,9 @@ export default function RevealPanel({ className = "", innerClassName = "", delay
         { scale: 1.2 },
         {
           scale: 1,
-          duration: 1.6,
+          duration: DURATION.slower,
           delay,
-          ease: "power3.out",
+          ease: EASE_OUT_SOFT,
           scrollTrigger: { trigger: wrapRef.current, start: "top 88%", once: true },
         }
       );

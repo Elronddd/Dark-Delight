@@ -1,19 +1,14 @@
 "use client";
 
 import { business } from "@/content/business";
-import { useScrollReveal } from "@/lib/scroll/useScrollReveal";
+import AnimatedSection from "@/components/ui/motion/AnimatedSection";
 
 const cuisines = ["Tandoor", "Chinese", "Biryani", "Continental", "Coffee & Shakes"];
 
 export default function TrustStrip() {
-  const ref = useScrollReveal<HTMLDivElement>();
-
   return (
     <section className="border-y border-gold/10 bg-espresso/40">
-      <div
-        ref={ref}
-        className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-10 text-center sm:grid-cols-3 md:px-10"
-      >
+      <AnimatedSection className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-10 text-center sm:grid-cols-3 md:px-10">
         <div data-reveal>
           <p className="eyebrow mb-2">Rated</p>
           <p className="font-display text-2xl text-cream">
@@ -31,7 +26,7 @@ export default function TrustStrip() {
             {cuisines.join(" · ")}
           </p>
         </div>
-      </div>
+      </AnimatedSection>
     </section>
   );
 }

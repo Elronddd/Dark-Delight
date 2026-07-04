@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import SmoothScrollProvider from "@/lib/scroll/SmoothScrollProvider";
 import { getRestaurantJsonLd } from "@/lib/seo/jsonld";
 import CustomCursor from "@/components/ui/CustomCursor";
+import { SPRING_CURSOR_RING } from "@/lib/animations/transitions";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -49,12 +51,14 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <CustomCursor />
-        <SmoothScrollProvider>
-          <Navbar />
-          <div id="main-content">{children}</div>
-          <Footer />
-        </SmoothScrollProvider>
+        <MotionConfig transition={SPRING_CURSOR_RING} reducedMotion="user">
+          <CustomCursor />
+          <SmoothScrollProvider>
+            <Navbar />
+            <div id="main-content">{children}</div>
+            <Footer />
+          </SmoothScrollProvider>
+        </MotionConfig>
       </body>
     </html>
   );

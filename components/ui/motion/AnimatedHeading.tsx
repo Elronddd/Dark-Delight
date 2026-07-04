@@ -3,6 +3,9 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { EASE_OUT_STRONG } from "@/lib/animations/easing";
+import { DURATION } from "@/lib/constants";
+import { prefersReducedMotion } from "@/lib/utils/viewport";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,7 +25,7 @@ type Props = {
  * staggered, slightly-rotated entrance — reads as considerably more
  * "designed" than a single fade/translate block.
  */
-export default function SplitHeading({
+export default function AnimatedHeading({
   text,
   as = "h2",
   className = "",
@@ -35,7 +38,7 @@ export default function SplitHeading({
 
   useEffect(() => {
     if (!ref.current) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
       const targets = ref.current!.querySelectorAll("[data-word-inner]");
@@ -46,8 +49,8 @@ export default function SplitHeading({
           yPercent: 0,
           rotate: 0,
           opacity: 1,
-          duration: 0.9,
-          ease: "power4.out",
+          duration: DURATION.base,
+          ease: EASE_OUT_STRONG,
           stagger: 0.045,
           delay,
           scrollTrigger:
@@ -62,11 +65,13 @@ export default function SplitHeading({
   return (
     <Tag ref={ref as React.Ref<never>} className={className}>
       {words.map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden pb-[0.15em] mb-[-0.15em] align-top">
-          <span data-word-inner className="inline-block">
-            {word}
-            {i < words.length - 1 ? " " : ""}
+        <span key={i}>
+          <span className="inline-block overflow-hidden pb-[0.15em] mb-[-0.15em] align-top">
+            <span data-word-inner className="inline-block">
+              {word}
+            </span>
           </span>
+          {i < words.length - 1 ? " " : ""}
         </span>
       ))}
     </Tag>

@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 const browser = await chromium.launch();
 const context = await browser.newContext();
 const page = await context.newPage();
-await page.goto("http://localhost:3001/reservations", { waitUntil: "networkidle" });
+await page.goto("http://localhost:3000/reservations", { waitUntil: "networkidle" });
 
 await page.fill("#name", "Rahul Kumar");
 await page.selectOption("#partySize", "4");

@@ -1,24 +1,31 @@
 "use client";
 
-import { useScrollReveal } from "@/lib/scroll/useScrollReveal";
+import AnimatedSection from "@/components/ui/motion/AnimatedSection";
 import type { MenuCategory } from "@/content/menu";
 
 export default function MenuCategorySection({ category }: { category: MenuCategory }) {
-  const ref = useScrollReveal<HTMLElement>({ y: 20, stagger: 0.03 });
-
   return (
-    <section ref={ref} id={category.id} className="anchor-offset mb-20" data-reveal>
-      <div className="mb-8 flex items-baseline gap-4 border-b border-gold/10 pb-3">
+    <AnimatedSection
+      as="section"
+      id={category.id}
+      y={20}
+      stagger={0.03}
+      className="anchor-offset mb-20"
+      aria-labelledby={`${category.id}-heading`}
+    >
+      <div className="mb-8 flex items-baseline gap-4 border-b border-gold/10 pb-3" data-reveal>
         <span className="font-display text-gold/60">{category.number}</span>
-        <h2 className="font-display text-3xl text-cream">{category.name}</h2>
+        <h2 id={`${category.id}-heading`} className="font-display text-3xl text-cream">
+          {category.name}
+        </h2>
         {category.subtitle && (
           <span className="font-display italic text-cream/50">{category.subtitle}</span>
         )}
       </div>
 
       {category.subsections.map((sub, i) => (
-        <div key={sub.label ?? i} className="mb-8">
-          {sub.label && <p className="eyebrow mb-4">{sub.label}</p>}
+        <div key={sub.label ?? i} className="mb-8" data-reveal>
+          {sub.label && <h3 className="eyebrow mb-4 font-sans">{sub.label}</h3>}
           <div className="grid gap-x-10 gap-y-3 sm:grid-cols-2">
             {sub.items.map((item) => (
               <div
@@ -45,6 +52,6 @@ export default function MenuCategorySection({ category }: { category: MenuCatego
           </div>
         </div>
       ))}
-    </section>
+    </AnimatedSection>
   );
 }

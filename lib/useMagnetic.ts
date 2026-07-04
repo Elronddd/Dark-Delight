@@ -2,6 +2,8 @@
 
 import { useRef } from "react";
 import { useMotionValue, useSpring } from "framer-motion";
+import { getPointerFromCenter } from "@/lib/utils/mouse";
+import { SPRING_MAGNETIC } from "@/lib/animations/transitions";
 
 /**
  * Real magnetic-button physics: the element physically translates toward the
@@ -12,15 +14,12 @@ export function useMagnetic(strength = 0.35) {
   const ref = useRef<HTMLElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 200, damping: 15, mass: 0.4 });
-  const springY = useSpring(y, { stiffness: 200, damping: 15, mass: 0.4 });
+  const springX = useSpring(x, SPRING_MAGNETIC);
+  const springY = useSpring(y, SPRING_MAGNETIC);
 
   const onMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    const el = ref.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    const relX = e.clientX - (r.left + r.width / 2);
-    const relY = e.clientY - (r.top + r.height / 2);
+    if (!ref.current) return;
+    const { x: relX, y: relY } = getPointerFromCenter(e, ref.current);
     x.set(relX * strength);
     y.set(relY * strength);
   };

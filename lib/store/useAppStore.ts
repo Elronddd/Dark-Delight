@@ -11,6 +11,11 @@ type AppState = {
 
   activeSceneIndex: number;
   setActiveSceneIndex: (i: number) => void;
+
+  /** Owned by the single shared scroll listener in SmoothScrollProvider —
+   * components (e.g. Navbar) read this instead of adding their own listener. */
+  isScrolled: boolean;
+  setIsScrolled: (isScrolled: boolean) => void;
 };
 
 export const useAppStore = create<AppState>()(
@@ -24,6 +29,9 @@ export const useAppStore = create<AppState>()(
 
       activeSceneIndex: 0,
       setActiveSceneIndex: (i) => set({ activeSceneIndex: i }),
+
+      isScrolled: false,
+      setIsScrolled: (isScrolled) => set({ isScrolled }),
     }),
     {
       name: "dark-delight-app-store",
