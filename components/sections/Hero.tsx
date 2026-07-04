@@ -50,44 +50,49 @@ export default function Hero() {
 
       <motion.div
         className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32 md:px-10"
-        style={{ x: contentX, y: contentY }}
         // Idle "breathing" so the hero still feels alive with no cursor input —
         // auto-suppressed for prefers-reduced-motion via the app-wide MotionConfig.
+        // Kept on its own element/transform, separate from the mouse-parallax
+        // `style` below, since binding both an `animate` loop and a `style`
+        // motion value to the same `y` on one element makes Framer fight
+        // itself every frame (the exact cause of a reported stutter).
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
       >
-        <motion.div
-          className="max-w-xl"
-          variants={HERO_STAGGER_CONTAINER}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.p variants={HERO_ITEM_VARIANTS} className="eyebrow mb-5">
-            Patna · Bihar
-          </motion.p>
-
-          <AnimatedHeading
-            as="h1"
-            trigger="mount"
-            delay={0.62}
-            className="font-display text-6xl leading-[1.05] text-cream md:text-7xl"
-            text={business.heroLine}
-          />
-
-          <motion.p
-            variants={HERO_ITEM_VARIANTS}
-            className="mt-6 max-w-md text-lg leading-relaxed text-cream/70"
+        <motion.div style={{ x: contentX, y: contentY }}>
+          <motion.div
+            className="max-w-xl"
+            variants={HERO_STAGGER_CONTAINER}
+            initial="hidden"
+            animate="visible"
           >
-            {business.storyLine}
-          </motion.p>
+            <motion.p variants={HERO_ITEM_VARIANTS} className="eyebrow mb-5">
+              Patna · Bihar
+            </motion.p>
 
-          <motion.div variants={HERO_ITEM_VARIANTS} className="mt-10 flex flex-wrap items-center gap-4">
-            <Link href="/reservations">
-              <ShinyButton>Reserve a Table</ShinyButton>
-            </Link>
-            <Link href="/menu">
-              <NeonButton>View Menu</NeonButton>
-            </Link>
+            <AnimatedHeading
+              as="h1"
+              trigger="mount"
+              delay={0.62}
+              className="font-display text-6xl leading-[1.05] text-cream md:text-7xl"
+              text={business.heroLine}
+            />
+
+            <motion.p
+              variants={HERO_ITEM_VARIANTS}
+              className="mt-6 max-w-md text-lg leading-relaxed text-cream/70"
+            >
+              {business.storyLine}
+            </motion.p>
+
+            <motion.div variants={HERO_ITEM_VARIANTS} className="mt-10 flex flex-wrap items-center gap-4">
+              <Link href="/reservations">
+                <ShinyButton>Reserve a Table</ShinyButton>
+              </Link>
+              <Link href="/menu">
+                <NeonButton>View Menu</NeonButton>
+              </Link>
+            </motion.div>
           </motion.div>
         </motion.div>
       </motion.div>
