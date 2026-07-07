@@ -7,19 +7,12 @@ const cuisines = ["Tandoor", "Chinese", "Biryani", "Continental", "Coffee & Shak
 
 export default function TrustStrip() {
   return (
-    <section className="relative overflow-hidden border-y border-gold/10 bg-espresso/40">
-      {/* Softens the hard color-cut from Hero's bg-ink into this section's tint. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-ink/50 to-transparent"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-ink/50 to-transparent"
-      />
+    <section className="relative overflow-hidden border-y border-blush/10 bg-surface/60">
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-ink/50 to-transparent" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-ink/50 to-transparent" />
       <AnimatedSection
         variant="scale"
-        className="relative mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-10 text-center sm:grid-cols-3 sm:divide-x sm:divide-gold/10 md:px-10"
+        className="relative mx-auto grid max-w-6xl grid-cols-1 gap-8 px-6 py-10 text-center sm:grid-cols-3 sm:divide-x sm:divide-blush/10 md:px-10"
       >
         <div data-reveal>
           <p className="eyebrow mb-2">Rated</p>
@@ -34,9 +27,7 @@ export default function TrustStrip() {
         </div>
         <div data-reveal>
           <p className="eyebrow mb-2">Kitchen</p>
-          <p className="mx-auto max-w-xs font-display text-lg text-cream/80">
-            {cuisines.join(" · ")}
-          </p>
+          <p className="mx-auto max-w-xs font-display text-lg text-cream/80">{cuisines.join(" · ")}</p>
         </div>
       </AnimatedSection>
     </section>

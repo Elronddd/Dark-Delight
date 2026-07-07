@@ -7,11 +7,7 @@ type Props = {
   reveal?: boolean;
 };
 
-/**
- * Thin semantic wrapper for a single "revealable" child inside an
- * AnimatedSection — sugar for `<div data-reveal>`, so call sites read as
- * intent ("this fades in") rather than a bare data attribute.
- */
+/** Thin semantic wrapper for a single "revealable" child inside an AnimatedSection. */
 export default function AnimatedContainer({ children, className = "", reveal = true }: Props) {
   return (
     <div className={className} data-reveal={reveal || undefined}>

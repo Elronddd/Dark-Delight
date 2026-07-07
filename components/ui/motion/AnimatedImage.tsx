@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { EASE_OUT_SOFT, EASE_IN_OUT_STRONG } from "@/lib/animations/easing";
+import { EASE_OUT_VELVET, EASE_IN_OUT_SILK } from "@/lib/animations/easing";
 import { DURATION } from "@/lib/constants";
 import { SPRING_CARD_TILT } from "@/lib/animations/transitions";
 import { hasFinePointer, prefersReducedMotion } from "@/lib/utils/viewport";
@@ -18,33 +19,23 @@ type Props = {
   className?: string;
   /** Background/gradient/image — goes on the inner element that Ken-Burns zooms. */
   innerClassName?: string;
-  /** Stagger offset (seconds) when several panels reveal together. */
   delay?: number;
   children?: React.ReactNode;
   /** Adds a slow scroll-scrubbed vertical drift on top of the entrance reveal. */
   parallax?: boolean;
   /** Adds a subtle pointer-tilt + scale on hover (fine-pointer devices only). */
   hoverTilt?: boolean;
-  /** Ambient sheen sweep across the placeholder gradient — off by default since
-   * it's only meant for the styled gradient stand-ins, not real photography. */
-  shimmer?: boolean;
+  /** Real photo to fill the panel. When set, innerClassName should drop its gradient (keep "grain"). */
+  src?: string;
+  alt?: string;
+  sizes?: string;
 };
 
 /**
  * Wipes a panel into view via clip-path (curtain reveal) with a Ken-Burns
- * zoom-out — reads far more "designed" than an opacity fade. Currently used
- * with styled gradient placeholders (see content/business.ts notes on real
- * photography); when real photos land, swap the `innerClassName` gradient
- * div for a `next/image` `<Image fill>` here and set `sizes`/`priority`
- * appropriately for the slot (hero-adjacent panels should set `priority`,
- * below-the-fold gallery frames should not).
- *
- * The optional hover-tilt lives on the same node GSAP clip-path-masks (wrapRef)
- * — safe because GSAP only ever touches `clip-path` there while Framer only
- * ever touches `transform`, so the two never fight over one CSS property (the
- * bug that caused Hero's reported jank came from two systems both writing
- * `transform` on the same element). The optional scroll parallax and the
- * Ken-Burns zoom each get their own separate element for the same reason.
+ * zoom-out. The hover-tilt lives on the same node GSAP clip-path-masks —
+ * safe because GSAP only ever touches `clip-path` there while Framer only
+ * ever touches `transform`, so the two never fight over one CSS property.
  */
 export default function AnimatedImage({
   className = "",
@@ -53,7 +44,9 @@ export default function AnimatedImage({
   children,
   parallax = false,
   hoverTilt = false,
-  shimmer = false,
+  src,
+  alt = "",
+  sizes = "(min-width: 768px) 50vw, 100vw",
 }: Props) {
   const parallaxRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -83,18 +76,18 @@ export default function AnimatedImage({
           clipPath: "inset(0% 0% 0% 0%)",
           duration: DURATION.slow,
           delay,
-          ease: EASE_IN_OUT_STRONG,
+          ease: EASE_IN_OUT_SILK,
           scrollTrigger: { trigger: wrapRef.current, start: "top 88%", once: true },
         }
       );
       gsap.fromTo(
         innerRef.current,
-        { scale: 1.2 },
+        { scale: 1.15 },
         {
           scale: 1,
           duration: DURATION.slower,
           delay,
-          ease: EASE_OUT_SOFT,
+          ease: EASE_OUT_VELVET,
           scrollTrigger: { trigger: wrapRef.current, start: "top 88%", once: true },
         }
       );
@@ -118,12 +111,18 @@ export default function AnimatedImage({
           tiltX.set(0);
           tiltY.set(0);
         }}
-        whileHover={tiltEnabled ? { scale: 1.04 } : undefined}
+        whileHover={tiltEnabled ? { scale: 1.03 } : undefined}
         transition={SPRING_CARD_TILT}
         style={tiltEnabled ? { rotateX, rotateY, transformPerspective: 800 } : undefined}
         className="h-full w-full overflow-hidden"
       >
-        <div ref={innerRef} className={`relative h-full w-full ${shimmer ? "shimmer" : ""} ${innerClassName}`}>
+        <div ref={innerRef} className={`relative h-full w-full ${innerClassName}`}>
+          {src && (
+            <>
+              <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-transparent" />
+            </>
+          )}
           {children}
         </div>
       </motion.div>

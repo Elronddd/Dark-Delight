@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #17110c;
-  --foreground: #f5ede0;
+  --background: #12080a;
+  --foreground: #f5eae6;
 }
 
 body {
@@ -18,7 +18,7 @@ body {
   }
 
   .eyebrow {
-    @apply font-sans uppercase tracking-eyebrow text-xs text-gold;
+    @apply font-sans uppercase tracking-eyebrow text-xs text-blush;
   }
 
   /* Offsets in-page anchors (menu category jump nav) for the fixed navbar */
@@ -26,40 +26,25 @@ body {
     scroll-margin-top: 6rem;
   }
 
-  /* Subtle film grain for the premium/cinematic surface texture */
+  /* Subtle film grain for a premium, non-flat surface texture */
   .grain::before {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.06;
+    opacity: 0.05;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* Choreographed entrance for server-rendered hero copy (no client JS needed) */
   .enter-fade-up {
-    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  /* Plays automatically whenever a freshly-filtered menu row mounts — CSS-only
-     so it doesn't require pulling framer-motion into the /menu bundle just for
-     list filtering (measured ~38kB for no real runtime benefit there). */
+  /* Plays automatically whenever a freshly-filtered menu row mounts. */
   .item-enter {
     animation: itemFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  /* Slow ambient sheen sweep for placeholder image panels — reads as a soft
-     light pass rather than a "loading" spinner, so it works as a permanent
-     ambient touch, not just a one-shot loading cue. */
-  .shimmer::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(115deg, transparent 40%, rgba(245, 237, 224, 0.08) 50%, transparent 60%);
-    background-size: 250% 250%;
-    animation: shimmerSweep 6s ease-in-out infinite;
   }
 }
 
@@ -85,18 +70,8 @@ body {
   }
 }
 
-@keyframes shimmerSweep {
-  0% {
-    background-position: 200% 0%;
-  }
-  50%,
-  100% {
-    background-position: -50% 0%;
-  }
-}
-
 *:focus-visible {
-  outline: 2px solid #e8821e;
+  outline: 2px solid #dbabab;
   outline-offset: 2px;
 }
 

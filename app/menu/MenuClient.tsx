@@ -30,21 +30,21 @@ export default function MenuClient() {
   return (
     <div className="mx-auto mt-12 max-w-5xl px-6 md:px-10">
       {/* Filter bar */}
-      <div className="sticky top-20 z-30 mb-10 flex flex-col gap-4 rounded-2xl border border-gold/10 bg-espresso/80 p-4 backdrop-blur-md sm:flex-row sm:items-center">
+      <div className="sticky top-20 z-30 mb-10 flex flex-col gap-4 rounded-2xl border border-blush/10 bg-surface/80 p-4 backdrop-blur-md sm:flex-row sm:items-center">
         <input
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search the menu…"
           aria-label="Search the menu"
-          className="w-full rounded-xl border border-gold/20 bg-ink px-4 py-2 text-cream placeholder:text-cream/40 focus-visible:border-ember"
+          className="w-full rounded-xl border border-blush/20 bg-ink px-4 py-2 text-cream placeholder:text-cream/40 focus-visible:border-blush"
         />
         <label className="flex shrink-0 cursor-pointer items-center gap-2 text-sm text-cream/80">
           <input
             type="checkbox"
             checked={vegOnly}
             onChange={(e) => setVegOnly(e.target.checked)}
-            className="h-4 w-4 accent-ember"
+            className="h-4 w-4 accent-rose"
           />
           Veg only
         </label>
@@ -57,7 +57,7 @@ export default function MenuClient() {
             key={category.id}
             href={`#${category.id}`}
             data-cursor-hover
-            className="rounded-full border border-gold/20 px-3 py-1 text-xs text-cream/70 transition-colors hover:border-ember hover:text-ember"
+            className="rounded-full border border-blush/20 px-3 py-1 text-xs text-cream/70 transition-colors hover:border-blush hover:text-blush"
           >
             {category.name}
           </a>

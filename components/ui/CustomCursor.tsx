@@ -7,8 +7,8 @@ import { SPRING_CURSOR_FOLLOW, SPRING_CURSOR_RING } from "@/lib/animations/trans
 
 /**
  * Site-wide magnetic cursor: a tight dot plus a lagging ring that scales up
- * over anything marked data-cursor-hover (buttons, cards, drag zones).
- * Disabled entirely on touch/coarse-pointer devices and reduced-motion.
+ * over anything marked data-cursor-hover. Disabled on touch/coarse-pointer
+ * devices and reduced-motion.
  */
 export default function CustomCursor() {
   const [enabled, setEnabled] = useState(false);
@@ -54,17 +54,17 @@ export default function CustomCursor() {
       <motion.div
         style={{ left: x, top: y }}
         animate={{ opacity: dragLabel ? 0 : 1 }}
-        className="fixed h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-ember"
+        className="fixed h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blush"
       />
       <motion.div
         style={{ left: ringX, top: ringY }}
         animate={{
-          width: dragLabel ? 80 : hovering ? 56 : 32,
-          height: dragLabel ? 80 : hovering ? 56 : 32,
-          opacity: hovering ? 0.9 : 0.5,
+          width: dragLabel ? 78 : hovering ? 54 : 32,
+          height: dragLabel ? 78 : hovering ? 54 : 32,
+          opacity: hovering ? 0.9 : 0.45,
         }}
         transition={SPRING_CURSOR_RING}
-        className="fixed flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-ember mix-blend-difference"
+        className="fixed flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-blush mix-blend-difference"
       >
         {dragLabel && (
           <motion.span

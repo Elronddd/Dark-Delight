@@ -42,7 +42,7 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
       return;
     }
 
-    const lenis = new Lenis({ duration: 0.9, smoothWheel: true, easing: easeOutCubic });
+    const lenis = new Lenis({ duration: 1.0, smoothWheel: true, easing: easeOutCubic });
     lenisInstance = lenis;
 
     const update = (time: number) => lenis.raf(time * 1000);

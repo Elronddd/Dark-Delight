@@ -11,21 +11,32 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        ink: "#17110C",
-        espresso: "#3B2A1E",
-        ember: {
-          DEFAULT: "#E8821E",
-          deep: "#C4650F",
+        // Sampled directly from vibes.png's palette swatches.
+        ink: "#12080A",
+        surface: "#240C0E",
+        wine: {
+          DEFAULT: "#651D1D",
+          deep: "#4A1515",
         },
-        cream: "#F5EDE0",
-        gold: "#C9A463",
+        rose: {
+          DEFAULT: "#944B4B",
+          deep: "#7A3B3B",
+        },
+        blush: "#DDBABA",
+        cream: "#F5EAE6",
       },
       fontFamily: {
-        display: ["var(--font-fraunces)", "serif"],
-        sans: ["var(--font-inter)", "sans-serif"],
+        // "AA Cindie" (commercial, not on Google Fonts) — Unbounded is the
+        // free lookalike: same bold, blocky, geometric-caps character.
+        display: ["var(--font-unbounded)", "sans-serif"],
+        // The moodboard names Helvetica directly — rather than substitute a
+        // different free face, use the real system font stack: renders as
+        // true Helvetica Neue on Mac/iOS and the near-identical Arial
+        // elsewhere, at zero download cost.
+        sans: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
       },
       letterSpacing: {
-        "eyebrow": "0.15em",
+        eyebrow: "0.15em",
       },
     },
   },

@@ -22,9 +22,3 @@ export function getPointerNormalized(e: PointerLike, el: Element) {
   const { x, y, rect } = getPointerOffset(e, el);
   return { x: x / rect.width - 0.5, y: y / rect.height - 0.5 };
 }
-
-/** Raw pixel offset of the pointer from the element's center (used for magnetic pull). */
-export function getPointerFromCenter(e: PointerLike, el: Element) {
-  const rect = el.getBoundingClientRect();
-  return { x: e.clientX - (rect.left + rect.width / 2), y: e.clientY - (rect.top + rect.height / 2) };
-}

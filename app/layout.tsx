@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Unbounded } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
@@ -9,24 +9,17 @@ import { getRestaurantJsonLd } from "@/lib/seo/jsonld";
 import CustomCursor from "@/components/ui/CustomCursor";
 import { SPRING_CURSOR_RING } from "@/lib/animations/transitions";
 
-const fraunces = Fraunces({
+const unbounded = Unbounded({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["400", "500", "600"],
+  variable: "--font-unbounded",
+  weight: ["400", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://darkdelight.example"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://darkdelight-3d.example"),
   title: "Dark Delight — Restaurant & Cafe | Patna",
   description:
-    "A cosy corner for coffee, comfort food & good company in Anandpuri, Patna. Life begins after flavour.",
+    "A rich pour, a slower evening — coffee and comfort food in the heart of Patna. Steeped in warmth.",
 };
 
 export default function RootLayout({
@@ -42,12 +35,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(getRestaurantJsonLd()) }}
         />
       </head>
-      <body
-        className={`${fraunces.variable} ${inter.variable} font-sans antialiased bg-ink text-cream`}
-      >
+      <body className={`${unbounded.variable} font-sans antialiased bg-ink text-cream`}>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-ember focus:px-4 focus:py-2 focus:text-ink"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-rose focus:px-4 focus:py-2 focus:text-cream"
         >
           Skip to content
         </a>

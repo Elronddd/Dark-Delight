@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { EASE_OUT_STRONG } from "@/lib/animations/easing";
+import { EASE_OUT_VELVET } from "@/lib/animations/easing";
 import { DURATION } from "@/lib/constants";
 import { prefersReducedMotion } from "@/lib/utils/viewport";
 
@@ -16,14 +16,16 @@ type Props = {
   as?: Tag;
   className?: string;
   delay?: number;
-  /** "mount" animates immediately (e.g. the hero, which loads before any scrolling); "scroll" waits for the element to enter the viewport. */
+  /** "mount" animates immediately (e.g. the hero); "scroll" waits for the element to enter the viewport. */
   trigger?: "scroll" | "mount";
 };
 
 /**
  * Masks each word behind overflow-hidden and wipes it up into place with a
- * staggered, slightly-rotated entrance — reads as considerably more
- * "designed" than a single fade/translate block.
+ * staggered, slightly-rotated entrance. The trailing space of each word sits
+ * OUTSIDE the masked span (as a sibling), not inside it — a trailing space
+ * inside a display:inline-block gets trimmed by the browser regardless of
+ * what follows, which otherwise collapses word spacing.
  */
 export default function AnimatedHeading({
   text,
@@ -44,14 +46,14 @@ export default function AnimatedHeading({
       const targets = ref.current!.querySelectorAll("[data-word-inner]");
       gsap.fromTo(
         targets,
-        { yPercent: 115, rotate: 6, opacity: 0 },
+        { yPercent: 115, rotate: 5, opacity: 0 },
         {
           yPercent: 0,
           rotate: 0,
           opacity: 1,
           duration: DURATION.base,
-          ease: EASE_OUT_STRONG,
-          stagger: 0.045,
+          ease: EASE_OUT_VELVET,
+          stagger: 0.05,
           delay,
           scrollTrigger:
             trigger === "scroll" ? { trigger: ref.current, start: "top 85%", once: true } : undefined,

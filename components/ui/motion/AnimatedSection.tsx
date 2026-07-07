@@ -4,26 +4,17 @@ import { useScrollReveal, type RevealVariant } from "@/lib/scroll/useScrollRevea
 
 type Props = React.HTMLAttributes<HTMLElement> & {
   children: React.ReactNode;
-  /** Slide-up/side distance in px for the reveal (default matches useScrollReveal's own default of 32). */
   y?: number;
-  /** Delay between each `data-reveal` child's entrance. */
   stagger?: number;
-  /** Element tag to render — "section" when this wrapper IS the landmark
-   * (e.g. an anchor-jump target that also needs the reveal). */
   as?: "div" | "section";
-  /** Reveal recipe — pick a distinct one per section so the page doesn't
-   * repeat the same entrance everywhere. Defaults to "fade". */
   variant?: RevealVariant;
-  /** Alternates +/- this many degrees per data-reveal target — a "layered" stagger for grids. */
   rotate?: number;
 };
 
 /**
- * Standard "reveal on scroll" wrapper — replaces the repeated
- * `const ref = useScrollReveal(...); <div ref={ref}>` pattern that was
- * copy-pasted into every section. Mark the children that should fade/slide
- * in with `data-reveal`; if none are marked, the whole block animates as one.
- * Any standard HTML/ARIA attribute (id, aria-labelledby, etc.) passes through.
+ * Standard "reveal on scroll" wrapper. Mark the children that should
+ * fade/slide in with `data-reveal`; if none are marked, the whole block
+ * animates as one. Any standard HTML/ARIA attribute passes through.
  */
 export default function AnimatedSection({
   children,
@@ -36,11 +27,8 @@ export default function AnimatedSection({
 }: Props) {
   const ref = useScrollReveal<HTMLElement>({ y, stagger, variant, rotate });
 
-  // Cast needed because a single ref (typed HTMLElement, the common
-  // supertype) is shared across two possible tags — TypeScript's DOM ref
-  // types are invariant per-element, so no single ref type satisfies both
-  // <div> and <section> without this, same as the equivalent cast in
-  // AnimatedHeading's polymorphic `as` prop.
+  // Cast needed because a single ref (typed HTMLElement) is shared across two
+  // possible tags — TypeScript's DOM ref types are invariant per-element.
   if (as === "section") {
     return (
       <section ref={ref as React.Ref<never>} {...rest}>

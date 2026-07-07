@@ -1,14 +1,16 @@
 /**
- * Central source of truth for real-world business facts.
+ * Central source of truth for real-world business facts — carried over from
+ * the original Dark Delight website build (same restaurant, same facts).
  * Anything marked PLACEHOLDER was not confirmed by the client before build
  * start and needs a real value swapped in here — nowhere else in the code
- * references these facts directly.
+ * references these facts directly. Hero copy below is new for this concept's
+ * warmer, more intimate direction.
  */
 export const business = {
   name: "Dark Delight",
   tagline: "Restaurant & Cafe",
-  heroLine: "Life Begins After Flavour",
-  storyLine: "A cosy corner for coffee, comfort food & good company.",
+  heroLine: "Steeped In Warmth",
+  storyLine: "A rich pour, a slower evening — coffee and comfort food in the heart of Patna.",
 
   phone: "+91 90906 26228",
   phoneHref: "tel:+919090626228",

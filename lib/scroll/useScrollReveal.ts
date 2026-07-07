@@ -11,10 +11,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Named reveal recipes so each section can pick a distinct entrance instead
- * of every section using the same fade-up — "fade" is the original/default:
+ * of every section using the same fade-up — "fade" is the default:
  * - mask: clip-path curtain wipe (doubles as a text "line reveal")
  * - slide-left / slide-right: horizontal drift + blur
- * - scale: soft pop from 0.92 + blur, for stat/chip-like content
+ * - scale: soft pop from 0.94 + blur, for stat/chip-like content
  */
 export type RevealVariant = "fade" | "mask" | "slide-left" | "slide-right" | "scale";
 
@@ -22,7 +22,7 @@ type RevealOptions = {
   y?: number;
   stagger?: number;
   variant?: RevealVariant;
-  /** Alternates +/- this many degrees per target index — a "layered" stagger for grids/cards. */
+  /** Alternates +/- this many degrees per target index — a "layered" stagger for grids. */
   rotate?: number;
 };
 
@@ -49,7 +49,7 @@ function buildKeyframes(options: RevealOptions | undefined) {
       to.filter = "blur(0px)";
       break;
     case "scale":
-      from.scale = 0.92;
+      from.scale = 0.94;
       from.filter = "blur(4px)";
       to.scale = 1;
       to.filter = "blur(0px)";

@@ -10,8 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * Scrubs a target's yPercent against its own scroll progress — a cheap depth
  * cue for background glows/panels that should drift slower than the page
- * scrolls. Factored out of ReservationCTA so other sections can reuse the
- * same "ambient background parallax" technique instead of re-deriving it.
+ * scrolls.
  */
 export function useParallaxScrub<T extends HTMLElement>(
   ref: RefObject<T | null>,

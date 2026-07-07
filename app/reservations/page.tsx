@@ -12,7 +12,7 @@ export default function ReservationsPage() {
     <main className="min-h-screen bg-ink px-6 pb-24 pt-32 md:px-10">
       <div className="mx-auto max-w-lg text-center">
         <p className="eyebrow mb-4">Reserve Your Experience</p>
-        <h1 className="font-display text-5xl text-cream md:text-6xl">Book a Table</h1>
+        <h1 className="font-display text-4xl uppercase text-cream md:text-5xl">Book a Table</h1>
         <p className="mx-auto mt-4 max-w-sm text-cream/70">
           Fill in your details below — we&apos;ll confirm on WhatsApp in minutes.
         </p>
@@ -23,7 +23,7 @@ export default function ReservationsPage() {
       </div>
 
       <p className="mt-10 text-center text-sm text-cream/50">
-        Prefer to call? <a href={business.phoneHref} className="text-ember hover:underline">{business.phone}</a>
+        Prefer to call? <a href={business.phoneHref} className="text-blush hover:underline">{business.phone}</a>
       </p>
     </main>
   );

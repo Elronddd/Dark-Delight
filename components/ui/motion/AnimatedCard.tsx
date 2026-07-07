@@ -17,16 +17,14 @@ type Props = {
 
 /**
  * Generic pointer-tilt card: rotates toward the cursor with a soft glow
- * following it, springs back on leave. Generalized out of DishCard so any
- * future card can opt into the same interaction without re-deriving the
- * pointer math. The drop shadow shifts opposite the tilt (as if cast by a
- * fixed light source) instead of sitting static under the card.
+ * following it, springs back on leave. The drop shadow shifts opposite the
+ * tilt, as if cast by a fixed light source, instead of sitting static.
  */
 export default function AnimatedCard({
   children,
   className = "",
-  tiltRange = 12,
-  glowColor = "rgba(232,130,30,.35)",
+  tiltRange = 10,
+  glowColor = "rgba(148,75,75,.35)",
 }: Props) {
   const [hovered, setHovered] = useState(false);
   const x = useMotionValue(0);
@@ -37,10 +35,10 @@ export default function AnimatedCard({
   const glowY = useTransform(y, [-0.5, 0.5], [0, 100]);
   const glow = useMotionTemplate`radial-gradient(220px circle at ${glowX}% ${glowY}%, ${glowColor}, transparent 70%)`;
 
-  const shadowX = useSpring(useTransform(x, [-0.5, 0.5], [18, -18]), SPRING_CARD_TILT);
-  const shadowY = useSpring(useTransform(y, [-0.5, 0.5], [10, 26]), SPRING_CARD_TILT);
-  const shadowAlpha = useSpring(hovered ? 0.5 : 0, SPRING_CARD_TILT);
-  const shadow = useMotionTemplate`${shadowX}px ${shadowY}px 44px -18px rgba(0,0,0,${shadowAlpha})`;
+  const shadowX = useSpring(useTransform(x, [-0.5, 0.5], [16, -16]), SPRING_CARD_TILT);
+  const shadowY = useSpring(useTransform(y, [-0.5, 0.5], [10, 24]), SPRING_CARD_TILT);
+  const shadowAlpha = useSpring(hovered ? 0.55 : 0, SPRING_CARD_TILT);
+  const shadow = useMotionTemplate`${shadowX}px ${shadowY}px 40px -16px rgba(0,0,0,${shadowAlpha})`;
 
   return (
     <motion.div
@@ -56,7 +54,7 @@ export default function AnimatedCard({
       }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      whileHover={{ ...HOVER_SCALE_SM, y: -6 }}
+      whileHover={{ ...HOVER_SCALE_SM, y: -5 }}
       transition={SPRING_CARD_HOVER}
       style={{ rotateX, rotateY, transformPerspective: 800, boxShadow: shadow }}
       className={`group relative overflow-hidden ${className}`}

@@ -16,13 +16,13 @@ export default function MenuCategorySection({ category, index }: { category: Men
       className="anchor-offset mb-20"
       aria-labelledby={`${category.id}-heading`}
     >
-      <div className="mb-8 flex items-baseline gap-4 border-b border-gold/10 pb-3" data-reveal>
-        <span className="font-display text-gold/60">{category.number}</span>
-        <h2 id={`${category.id}-heading`} className="font-display text-3xl text-cream">
+      <div className="mb-8 flex items-baseline gap-4 border-b border-blush/10 pb-3" data-reveal>
+        <span className="font-display text-blush/60">{category.number}</span>
+        <h2 id={`${category.id}-heading`} className="font-display text-2xl uppercase text-cream">
           {category.name}
         </h2>
         {category.subtitle && (
-          <span className="font-display italic text-cream/50">{category.subtitle}</span>
+          <span className="font-sans italic text-cream/50">{category.subtitle}</span>
         )}
       </div>
 
@@ -35,7 +35,7 @@ export default function MenuCategorySection({ category, index }: { category: Men
               // match, which is what makes .item-enter's mount animation replay.
               <div
                 key={item.name}
-                className="item-enter flex items-baseline justify-between gap-3 border-b border-gold/5 pb-2"
+                className="item-enter flex items-baseline justify-between gap-3 border-b border-blush/5 pb-2"
               >
                 <span className="flex items-center gap-2 text-cream/90">
                   <span
@@ -46,12 +46,12 @@ export default function MenuCategorySection({ category, index }: { category: Men
                   />
                   {item.name}
                   {item.signature && (
-                    <span className="eyebrow rounded-full bg-ember/10 px-2 py-0.5 text-[10px] text-ember">
+                    <span className="eyebrow rounded-full bg-rose/10 px-2 py-0.5 text-[10px] text-blush">
                       Signature
                     </span>
                   )}
                 </span>
-                <span className="shrink-0 whitespace-nowrap font-display text-gold">₹{item.price}</span>
+                <span className="shrink-0 whitespace-nowrap font-display text-blush">₹{item.price}</span>
               </div>
             ))}
           </div>

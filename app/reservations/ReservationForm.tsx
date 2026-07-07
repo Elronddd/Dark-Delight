@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ShinyButton from "@/components/ui/ShinyButton";
+import PrimaryButton from "@/components/ui/PrimaryButton";
 import { buildReservationWhatsAppUrl } from "@/lib/whatsapp";
 
 export default function ReservationForm() {
@@ -21,7 +21,7 @@ export default function ReservationForm() {
   }
 
   const inputClass =
-    "w-full rounded-xl border border-gold/20 bg-espresso px-4 py-3 text-cream placeholder:text-cream/40 focus-visible:border-ember";
+    "w-full rounded-xl border border-blush/20 bg-surface px-4 py-3 text-cream placeholder:text-cream/40 focus-visible:border-blush";
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-lg space-y-5">
@@ -103,9 +103,9 @@ export default function ReservationForm() {
         />
       </div>
 
-      <ShinyButton type="submit" disabled={!canSubmit} className="w-full disabled:opacity-40">
+      <PrimaryButton type="submit" disabled={!canSubmit} className="w-full disabled:opacity-40">
         Send via WhatsApp
-      </ShinyButton>
+      </PrimaryButton>
       <p className="text-center text-xs text-cream/40">
         This opens WhatsApp with your details pre-filled — we&apos;ll confirm your table there.
       </p>
